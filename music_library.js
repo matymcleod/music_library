@@ -1,40 +1,41 @@
+const library = {
+       tracks: { 
+              t01: { id: "t01",
+                     name: "Code Monkey",
+                     artist: "Jonathan Coulton",
+                     album: "Thing a Week Three" },
+              t02: { id: "t02",
+              name: "Model View Controller",
+              artist: "James Dempsey",
+                     album: "WWDC 2003"},
+                     t03: { id: "t03",
+                     name: "Four Thirty-Three",
+                     artist: "John Cage",
+                     album: "Woodstock 1952"}
+},
+       playlists: { 
+              p01: { id: "p01",
+                     name: "Coding Music",
+                     tracks: ["t01", "t02"]
+              },
+              p02: { id: "p02",
+                     name: "Other Playlist",
+                     tracks: ["t03"]
+              }
+       }
+};
+
 // generates a unique id
-// (already implemented: use this for addTrack and addPlaylist)
 generateUid = function() {
   return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
 }
      
-const library = {
-tracks: { t01: { id: "t01",
-                   name: "Code Monkey",
-                   artist: "Jonathan Coulton",
-                   album: "Thing a Week Three" },
-            t02: { id: "t02",
-                   name: "Model View Controller",
-                   artist: "James Dempsey",
-                   album: "WWDC 2003"},
-            t03: { id: "t03",
-                   name: "Four Thirty-Three",
-                   artist: "John Cage",
-                   album: "Woodstock 1952"}
-          },
-  playlists: { p01: { id: "p01",
-                      name: "Coding Music",
-                      tracks: ["t01", "t02"]
-                    },
-               p02: { id: "p02",
-                      name: "Other Playlist",
-                      tracks: ["t03"]
-                    }
-             }
-       };
-
 // prints a list of all playlists, in the form:
 // p01: Coding Music - 2 tracks
 // p02: Other Playlist - 1 tracks
 const printPlaylists = function() {
-       for (let playlist in this.playlists) {
-              console.log(`${this.playlists[playlist].id}: ${this.playlists[playlist].name} - ${this.playlists[playlist].tracks.length} track(s)`);
+       for (let playlist in library.playlists) {
+              console.log(`printPlaylists:: ${library.playlists[playlist].id}: ${library.playlists[playlist].name} - ${library.playlists[playlist].tracks.length} track(s)`);
        }
    };
 
@@ -43,8 +44,8 @@ const printPlaylists = function() {
 // t02: Model View Controller by James Dempsey (WWDC 2003)
 // t03: Four Thirty-Three by John Cage (Woodstock 1952)
 const printTracks = function() {
-       for(let track in this.tracks) {
-              console.log(`${this.tracks[track].id}: ${this.tracks[track].name} by ${this.tracks[track].artist} (${this.tracks[track].album})`);
+       for(let track in library.tracks) {
+              console.log(`printTracks:: ${library.tracks[track].id}: ${library.tracks[track].name} by ${library.tracks[track].artist} (${library.tracks[track].album})`);
        }
   };
 
@@ -53,9 +54,9 @@ const printTracks = function() {
 // t01: Code Monkey by Jonathan Coulton (Thing a Week Three)
 // t02: Model View Controller by James Dempsey (WWDC 2003)
 const printPlaylist = function(playlistId) {
-       for(let playlistTracks of this.playlists[playlistId].tracks) {
-              const{id, name, artist, album}= this.tracks[playlistTracks];
-              console.log(`${id} ${name} ${artist} ${album}`);
+       for(let playlistTracks of library.playlists[playlistId].tracks) {
+              const{id, name, artist, album}= library.tracks[playlistTracks];
+              console.log(`printPlaylist:: ${id} ${name} ${artist} ${album}`);
        }
 };
 
@@ -71,6 +72,7 @@ const addTrackToPlaylist = function(trackId, playlistId) {
 // adds a track to the library
 const addTrack = function(name, artist, album) {
        const trackID = generateUid();
+       // default "track" values. template object generates a new playlist with keys for id, name, artist and albums.
        let newTrack = {
               id: trackID, 
               name: name,
@@ -79,25 +81,29 @@ const addTrack = function(name, artist, album) {
        }
        library.tracks[trackID] = newTrack;
 };
-addTrack("test1", "test2", "test3");
+
 
 // adds a playlist to the library and generates a random ID passed in by the gereratUid function
 const addPlaylist = function(name) {
        const playListID = generateUid();
-// template object generates a new playlist with keys for id, name and an array that stores tracks once pushed in.
+       // template object generates a new playlist with keys for id, name and an array that stores tracks once pushed in.
        let newPlaylist = {
               id: playListID,
               name: name,
               tracks: []
        }
-// new playlist is added to the library
+       // newPlaylist is added to the library
        library.playlists[playListID] = newPlaylist;
+};
 
-     };
 // function calls to add given arguments
+printTracks();
+printPlaylist("p02");
+addTrackToPlaylist("t02", "p01");
+addTrack("New", "New artist", "New Album");
 addPlaylist("New Playlist");
-addTrackToPlaylist("t01", "p02");
 
 // check log to confirm that new values are added to given sections
-console.log(library.playlists)
-console.log(library.tracks)
+console.log("addTrackToPlaylist:: ", library.playlists);
+console.log("addTrack:: ", library.tracks);
+console.log("addPlaylist:: ", library.playlists);
