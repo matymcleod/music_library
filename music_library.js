@@ -81,19 +81,23 @@ const addTrack = function(name, artist, album) {
 };
 addTrack("test1", "test2", "test3");
 
-// adds a playlist to the library
+// adds a playlist to the library and generates a random ID passed in by the gereratUid function
 const addPlaylist = function(name) {
        const playListID = generateUid();
+// template object generates a new playlist with keys for id, name and an array that stores tracks once pushed in.
        let newPlaylist = {
               id: playListID,
               name: name,
               tracks: []
        }
+// new playlist is added to the library
        library.playlists[playListID] = newPlaylist;
 
      };
-// Test code More test//
+// function calls to add given arguments
 addPlaylist("New Playlist");
 addTrackToPlaylist("t01", "p02");
+
+// check log to confirm that new values are added to given sections
 console.log(library.playlists)
 console.log(library.tracks)
